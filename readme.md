@@ -1,5 +1,5 @@
 ## Run
-Composer und Docker [Docker](https://docs.docker.com/) müssen installiert sein
+Composer und [Docker](https://docs.docker.com/) müssen installiert sein
 
 Repository clonen
 
