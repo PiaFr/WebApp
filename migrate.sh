@@ -1,5 +1,4 @@
 #!/bin/bash
 # Migration script
-php artisan migrate
-php artisan db:seed
-php artisan storage:link
+docker-compose exec app php artisan optimize
+docker-compose exec app php artisan migrate
