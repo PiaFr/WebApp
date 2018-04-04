@@ -1,4 +1,4 @@
-## Run
+## EasyLife im Docker Container installieren
 Composer und [Docker](https://docs.docker.com/) müssen installiert sein
 
 Repository clonen
