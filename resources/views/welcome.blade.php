@@ -75,7 +75,7 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    EasyLife Calender
                 </div>
 
                 <div class="links">
