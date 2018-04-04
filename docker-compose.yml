@@ -17,14 +17,11 @@ services:
       dockerfile: app.docker
     volumes:
       - ./:/var/www
-      - ./migrate.sh:/var/www/migrate.sh
     links:
       - db
     environment:
       - DB_PORT=3306
       - DB_HOST=db
-    command:
-      - migrate.sh
   db:
     image: mysql:5.7
     environment:

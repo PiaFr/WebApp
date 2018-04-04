@@ -5,19 +5,23 @@ Repository clonen
 
     git clone https://github.com/PiaFr/WebApp.git
 
- Change directory
+Change directory
 
     cd WebApp
 
-  Dependencies installieren
+Dependencies installieren
 
     composer install
 
-  Docker Container bauen und hochfahren
+Docker Container bauen und hochfahren
 
     docker-compose up -d
+
+Migration durchführen
+
+  	docker-compose exec app php artisan migrate
   
-  Aufrufen unter
+Aufrufen unter
 
     http://localhost:8080
 
