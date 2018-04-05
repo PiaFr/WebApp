@@ -20,7 +20,7 @@ class ToDoController extends Controller
 
             $todos = ToDoModel::where('userid', $uid)->get();
 
-            return View::make('home')->with('todos', $todos);
+            return View::make('aufgaben')->with('todos', $todos);
         }
         else
         {
