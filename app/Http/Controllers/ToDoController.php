@@ -8,96 +8,112 @@ namespace App\Http\Controllers;
 use App\ToDoModel;
 use Illuminate\Support\Facades\Auth;
 use View;
-
+use Illuminate\Support\Facades\Redirect;
 
 class ToDoController extends Controller
 {
     public function index(){
 
-        $user = Auth::user();
-        $uid = $user->id;
+        if(Auth::check()) {
+            $user = Auth::user();
+            $uid = $user->id;
 
-        $todos = ToDoModel::where('userid', $uid)->get();
+            $todos = ToDoModel::where('userid', $uid)->get();
 
-        return View::make('home')->with('todos', $todos);
+            return View::make('home')->with('todos', $todos);
+        }
+        else
+        {
+            return Redirect::to('/');
+        }
+
     }
 
     public function create()
     {
-        return View::make('create');
+        if(Auth::check()) {
+            return View::make('create');
+        }
     }
 
     public function store(){
+        if(Auth::check()) {
+            $rules = array(
+                'title' => 'required',
+                'priority' => 'required',
+                'duration' => 'required',
+            );
 
-        $rules = array(
-            'title'    => 'required',
-            'priority'      => 'required',
-            'duration'    => 'required',
-        );
+            $validator = Validator::make(Input::all(), $rules);
 
-        $validator = Validator::make(Input::all(), $rules);
+            if ($validator->fails()) {
+                return Redirect::to('/index.php/home/create')
+                    ->withErrors($validator)
+                    ->withInput(Input::except('password'));
+            } else {
+                $user = Auth::user();
 
-        if ($validator->fails()) {
-            return Redirect::to('/index.php/home/create')
-                ->withErrors($validator)
-                ->withInput(Input::except('password'));
-        } else {
-            $user = Auth::user();
+                $todo = new ToDoModel();
+                $todo->title = Input::get('title');
+                $todo->description = Input::get('description');
+                $todo->location = Input::get('location');
+                $todo->priority = Input::get('priority');
+                $todo->duration = Input::get('duration');;
 
-            $todo = new ToDoModel();
-            $todo->title       = Input::get('title');
-            $todo->description = Input::get('description');
-            $todo->location    = Input::get('location');
-            $todo->priority    = Input::get('priority');
-            $todo->duration    = Input::get('duration');;
+                $todo->userId = $user->id;
+                $todo->save();
 
-            $todo->userId = $user->id;
-            $todo->save();
-
-            return Redirect::to('home');
+                return Redirect::to('home');
+            }
         }
     }
 
     public function edit($id)
     {
-        $todo = ToDoModel::find($id);
+        if(Auth::check()) {
+            $todo = ToDoModel::find($id);
 
-        return View::make('edit')
-            ->with('todo', $todo);
+            return View::make('edit')
+                ->with('todo', $todo);
+        }
     }
 
     public function update($id)
     {
-        $rules = array(
-            'title'    => 'required',
-            'priority'      => 'required',
-            'duration'    => 'required'
-        );
-        $validator = Validator::make(Input::all(), $rules);
+        if(Auth::check()) {
+            $rules = array(
+                'title' => 'required',
+                'priority' => 'required',
+                'duration' => 'required'
+            );
+            $validator = Validator::make(Input::all(), $rules);
 
-        if ($validator->fails()) {
-            return Redirect::to('/home/' . $id . '/edit')
-                ->withErrors($validator)
-                ->withInput(Input::except('password'));
-        } else {
-            $todo = ToDoModel::find($id);
-            $todo->title       = Input::get('title');
-            $todo->description = Input::get('description');
-            $todo->location    = Input::get('location');
-            $todo->priority    = Input::get('priority');
-            $todo->duration    = Input::get('duration');
-            $todo->save();
+            if ($validator->fails()) {
+                return Redirect::to('/home/' . $id . '/edit')
+                    ->withErrors($validator)
+                    ->withInput(Input::except('password'));
+            } else {
+                $todo = ToDoModel::find($id);
+                $todo->title = Input::get('title');
+                $todo->description = Input::get('description');
+                $todo->location = Input::get('location');
+                $todo->priority = Input::get('priority');
+                $todo->duration = Input::get('duration');
+                $todo->save();
 
-            return Redirect::to('home');
+                return Redirect::to('home');
+            }
         }
     }
 
     public function destroy($id)
     {
-        $todo = ToDoModel::find($id);
-        $todo->delete();
+        if(Auth::check()) {
+            $todo = ToDoModel::find($id);
+            $todo->delete();
 
-        return Redirect::to('home');
+            return Redirect::to('home');
+        }
     }
 
 
