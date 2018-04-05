@@ -4,6 +4,8 @@
  * Date: 05.04.2018
  */
 namespace App;
+use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class ToDoModel extends Model
 {
