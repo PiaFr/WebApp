@@ -9,6 +9,7 @@ use App\ToDoModel;
 use Illuminate\Support\Facades\Auth;
 use View;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Http\Request;
 
 class ToDoController extends Controller
 {
@@ -116,5 +117,14 @@ class ToDoController extends Controller
         }
     }
 
+    public function ajaxDelete(Request $r)
+    {
+        $elementid = $r->id;
+        ToDoModel::find ( $elementid )->delete();
+
+        return response()->json();
+    }
+
 
 }
+

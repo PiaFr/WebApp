@@ -15,9 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
+
 
 Route::get('/aufgaben', 'ToDoController@index');
 
 Route::get('/home', 'ToDoController@index');
 
+Route::post('/deleteAjax', 'ToDoController@ajaxDelete');
+
+Auth::routes();

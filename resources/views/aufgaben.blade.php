@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 @section('content')
     <!-- Liste aller persönlichen ToDos -->
     @foreach ($todos as $todo)
@@ -6,7 +7,7 @@
             <div class="titel">
                 {{ $todo->titel }}
                     <div class="">
-                        <button value="{{$todo->id}}">x</button>
+                        <button value="{{$todo->id}}" class="btn-dell">x</button>
                     </div>
             </div>
             <div>Titel:
@@ -30,4 +31,31 @@
     <!-- Liste aller persönlichen ToDos ENDE -->
 @endsection
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        $(".btn-dell").click(function () {
+            var idElementToDelete = $(this).val();
+            var divToRemove = $('#'+idElementToDelete);
+
+            $.ajax({
+                type: 'POST',
+                url: "deleteAjax",
+                dataType: 'text',
+                data: {
+                    'id': idElementToDelete
+                },
+                success: function (data) {
+                    $(divToRemove).remove();
+                }
+            });
+        });
+    });
+</script>
 
